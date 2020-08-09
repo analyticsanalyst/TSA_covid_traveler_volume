@@ -60,7 +60,8 @@ clean_table_2 <- clean_table %>%
       # add wkd variable & include chart label var for geom_text_repel
       mutate(wkd_var = wday(Date, label=TRUE),
             chart_label = ifelse(metric=="Traveler_Throughput_2020" & 
-                                       wkd_var=="Fri", 
+                                       mday(Date)==1 &
+                                       month(Date) > 3 ,
                                   percent_change, NA))
 
 ### create vline df to plot vertical Friday lines for reference
@@ -79,9 +80,9 @@ clean_table_2 %>%
                       direction = "y",
                       fontface = "bold",
                       segment.color = NA,
-                      vjust=5,
-                      size=3.5) +
-      scale_y_continuous(breaks=seq(0,4,by=0.5)) +
+                      vjust=3,
+                      size=5) +
+      scale_y_continuous(breaks=seq(0,4,by=0.5), expand = expansion(mult = c(0.15, .05))) +
       scale_color_manual(values = c("salmon","dodgerblue")) +
       labs(title="2020 TSA Traveler Volume vs 2019 TSA Traveler Volume",
            subtitle="Traveler volume bottomed out in April. 
